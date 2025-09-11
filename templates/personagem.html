@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block title %}Criar Personagem - Sistema de Criação de Personagens{% endblock %}
+
+{% block content %}
+<h2 style="text-align: center; color: #ff8c00; margin-bottom: 1.5rem;">Criar Personagem para {{ username }}</h2>
+<form method="POST" action="{{ url_for('criar_personagem') }}">
+    <div class="form-section">
+        <h3>Escolha a Raça</h3>
+        <div class="options-grid">
+            <div class="option-card">
+                <input type="radio" id="raca1" name="raca" value="1" checked>
+                <label for="raca1">
+                    <h4>Humano</h4>
+                    <p>+1 em todos os atributos</p>
+                </label>
+            </div>
+            <div class="option-card">
+                <input type="radio" id="raca2" name="raca" value="2">
+                <label for="raca2">
+                    <h4>Elfo</h4>
+                    <p>+2 Constituição, +2 Inteligência</p>
+                </label>
+            </div>
+            <div class="option-card">
+                <input type="radio" id="raca3" name="raca" value="3">
+                <label for="raca3">
+                    <h4>Anão</h4>
+                    <p>+2 Força, +2 Constituição</p>
+                </label>
+            </div>
+            <div class="option-card">
+                <input type="radio" id="raca4" name="raca" value="4">
+                <label for="raca4">
+                    <h4>Meio-Elfo</h4>
+                    <p>+3 Destreza, +1 Inteligência</p>
+                </label>
+            </div>
+            <div class="option-card">
+                <input type="radio" id="raca5" name="raca" value="5">
+                <label for="raca5">
+                    <h4>Gnomo</h4>
+                    <p>+3 Carisma, +1 Destreza</p>
+                </label>
+            </div>
+            <div class="option-card">
+                <input type="radio" id="raca6" name="raca" value="6">
+                <label for="raca6">
+                    <h4>Halfling</h4>
+                    <p>+2 Carisma, +1 Destreza, +1 Sabedoria</p>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h3>Escolha o Estilo de Geração de Atributos</h3>
+        <div class="options-grid">
+            <div class="option-card">
+                <input type="radio" id="estilo1" name="estilo" value="1" checked>
+                <label for="estilo1">
+                    <h4>Clássico</h4>
+                    <p>3d6 direto nos atributos</p>
+                </label>
+            </div>
+            <div class="option-card">
+                <input type="radio" id="estilo2" name="estilo" value="2">
+                <label for="estilo2">
+                    <h4>Aventureiro</h4>
+                    <p>6 valores, você distribui</p>
+                </label>
+            </div>
+            <div class="option-card">
+                <input type="radio" id="estilo3" name="estilo" value="3">
+                <label for="estilo3">
+                    <h4>Heroico</h4>
+                    <p>4d6 dropa o menor, você distribui</p>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-section">
+        <h3>Escolha a Classe</h3>
+        <div class="options-grid">
+            <div class="option-card">
+                <input type="radio" id="classe1" name="classe" value="1" checked>
+                <label for="classe1">
+                    <h4>Mago</h4>
+                    <p>Dado de Vida: d4</p>
+                </label>
+            </div>
+            <div class="option-card">
+                <input type="radio" id="classe2" name="classe" value="2">
+                <label for="classe2">
+                    <h4>Ladrão</h4>
+                    <p>Dado de Vida: d6</p>
+                </label>
+            </div>
+            <div class="option-card">
+                <input type="radio" id="classe3" name="classe" value="3">
+                <label for="classe3">
+                    <h4>Druida</h4>
+                    <p>Dado de Vida: d8</p>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div id="atributos-section" class="form-section" style="display: none;">
+        <h3>Distribua os Atributos</h3>
+        <div class="atributos-grid">
+            <div class="atributo-input">
+                <label for="forca">Força:</label>
+                <input type="number" id="forca" name="forca" min="3" max="18" value="10">
+            </div>
+            <div class="atributo-input">
+                <label for="destreza">Destreza:</label>
+                <input type="number" id="destreza" name="destreza" min="3" max="18" value="10">
+            </div>
+            <div class="atributo-input">
+                <label for="constituicao">Constituição:</label>
+                <input type="number" id="constituicao" name="constituicao" min="3" max="18" value="10">
+            </div>
+            <div class="atributo-input">
+                <label for="inteligencia">Inteligência:</label>
+                <input type="number" id="inteligencia" name="inteligencia" min="3" max="18" value="10">
+            </div>
+            <div class="atributo-input">
+                <label for="sabedoria">Sabedoria:</label>
+                <input type="number" id="sabedoria" name="sabedoria" min="3" max="18" value="10">
+            </div>
+            <div class="atributo-input">
+                <label for="carisma">Carisma:</label>
+                <input type="number" id="carisma" name="carisma" min="3" max="18" value="10">
+            </div>
+        </div>
+    </div>
+
+    <button type="submit" style="margin-top: 2rem;">Criar Personagem</button>
+</form>
+
+<script>
+    document.querySelectorAll('input[name="estilo"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            const atributosSection = document.getElementById('atributos-section');
+            atributosSection.style.display = this.value === '1' ? 'none' : 'block';
+        });
+    });
+</script>
+{% endblock %}

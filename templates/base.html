@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Sistema de Criação de Personagens{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sistema de Criação de Personagens</h1>
+            {% if session.user %}
+            <div class="user-info">
+                Logado como: {{ session.user }} | <a href="{{ url_for('logout') }}">Sair</a>
+            </div>
+            {% endif %}
+        </header>
+        
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+        
+        <footer>
+            <p>&copy; 2023 Sistema de Criação de Personagens</p>
+        </footer>
+    </div>
+</body>
+</html>

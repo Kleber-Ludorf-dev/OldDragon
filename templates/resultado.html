@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Ficha do Personagem - Sistema de Criação de Personagens{% endblock %}
+
+{% block content %}
+<div class="ficha-personagem">
+    <h2 style="text-align: center; color: #ff8c00; margin-bottom: 1.5rem;">Ficha do Personagem</h2>
+    
+    <div class="ficha-section">
+        <h3>Informações Básicas</h3>
+        <p><strong>Nome:</strong> {{ personagem.nome }}</p>
+        <p><strong>Raça:</strong> {{ raca.nome }}</p>
+        <p><strong>Classe:</strong> {{ classe.nome }} (Nível {{ classe.nivel }})</p>
+        <p><strong>Pontos de Vida:</strong> {{ classe.pontos_de_vida }}</p>
+    </div>
+    
+    <div class="ficha-section">
+        <h3>Atributos</h3>
+        <div class="atributos-list">
+            {% for atributo, valor in personagem.atributos.items() %}
+            <div class="atributo-item">
+                <span class="atributo-nome">{{ atributo.capitalize() }}:</span>
+                <span class="atributo-valor">{{ valor }}</span>
+                <!-- <div class="atributo-barra">
+                    <div class="atributo-barra-preenchimento" style="width: {{ (valor / 18) * 100 }}%;"></div>
+                </div> -->
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <div class="ficha-section">
+        <h3>Habilidades da Classe</h3>
+        <ul>
+            {% for habilidade in classe.habilidades %}
+            <li>{{ habilidade }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <div class="ficha-section">
+        <h3>Características da Raça</h3>
+        <p><strong>Movimento:</strong> {{ raca.movimento }}m</p>
+        <p><strong>Infravisão:</strong> {{ raca.infravisao }}m</p>
+        <p><strong>Alinhamento:</strong> {{ raca.alinhamento }}</p>
+        <h4>Habilidades:</h4>
+        <ul>
+            {% for habilidade in raca.habilidades %}
+            <li>{{ habilidade }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    
+    <a href="{{ url_for('criar_personagem') }}" class="btn">Criar Novo Personagem</a>
+</div>
+{% endblock %}

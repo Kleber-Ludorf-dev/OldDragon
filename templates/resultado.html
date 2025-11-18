@@ -1,56 +1,283 @@
 {% extends "base.html" %}
 
-{% block title %}Ficha do Personagem - Sistema de Criação de Personagens{% endblock %}
-
 {% block content %}
-<div class="ficha-personagem">
-    <h2 style="text-align: center; color: #ff8c00; margin-bottom: 1.5rem;">Ficha do Personagem</h2>
-    
-    <div class="ficha-section">
-        <h3>Informações Básicas</h3>
-        <p><strong>Nome:</strong> {{ personagem.nome }}</p>
-        <p><strong>Raça:</strong> {{ raca.nome }}</p>
-        <p><strong>Classe:</strong> {{ classe.nome }} (Nível {{ classe.nivel }})</p>
-        <p><strong>Pontos de Vida:</strong> {{ classe.pontos_de_vida }}</p>
+<div class="container">
+    <div class="header">
+        <h1>🎉 Personagem Criado!</h1>
+        <div class="subtitle">Seu aventureiro está pronto para a jornada</div>
     </div>
     
-    <div class="ficha-section">
-        <h3>Atributos</h3>
-        <div class="atributos-list">
-            {% for atributo, valor in personagem.atributos.items() %}
-            <div class="atributo-item">
-                <span class="atributo-nome">{{ atributo.capitalize() }}:</span>
-                <span class="atributo-valor">{{ valor }}</span>
-                <!-- <div class="atributo-barra">
-                    <div class="atributo-barra-preenchimento" style="width: {{ (valor / 18) * 100 }}%;"></div>
-                </div> -->
+    <div class="content">
+        <!-- Mensagens Flash -->
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-success">
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        <!-- Informações Básicas -->
+        <div class="info-section">
+            <h2>📋 Informações do Personagem</h2>
+            <div class="info-grid">
+                <div class="info-card">
+                    <h3>Nome</h3>
+                    <p>{{ personagem.nome }}</p>
+                </div>
+                <div class="info-card">
+                    <h3>Raça</h3>
+                    <p>{{ raca.nome }}</p>
+                </div>
+                <div class="info-card">
+                    <h3>Classe</h3>
+                    <p>{{ classe.nome }}</p>
+                </div>
             </div>
-            {% endfor %}
+        </div>
+        
+        <!-- Atributos -->
+        <div class="info-section">
+            <h2>⚡ Atributos</h2>
+            <div class="atributos-grid">
+                {% for nome, valor in personagem.atributos.items() %}
+                <div class="atributo-card">
+                    <div class="atributo-header">
+                        <span class="atributo-nome">{{ nome }}</span>
+                        <span class="atributo-valor">{{ valor }}</span>
+                    </div>
+                    <div class="atributo-barra">
+                        {% set valor_num = valor | int %}
+                        {% set porcentagem = (valor_num / 18) * 100 %}
+                        <div class="atributo-preenchimento" style="width: {{ porcentagem }}%;"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Status do Salvamento -->
+        <div class="status-salvamento">
+            ✅ Personagem salvo no sistema!
+        </div>
+        
+        <!-- Ações -->
+        <div class="actions">
+            <a href="/criar_personagem" class="btn btn-primary">➕ Criar Outro Personagem</a>
+            <a href="/verificar_salvamento" class="btn btn-success" target="_blank">🔍 Verificar Salvamento</a>
         </div>
     </div>
-    
-    <div class="ficha-section">
-        <h3>Habilidades da Classe</h3>
-        <ul>
-            {% for habilidade in classe.habilidades %}
-            <li>{{ habilidade }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    
-    <div class="ficha-section">
-        <h3>Características da Raça</h3>
-        <p><strong>Movimento:</strong> {{ raca.movimento }}m</p>
-        <p><strong>Infravisão:</strong> {{ raca.infravisao }}m</p>
-        <p><strong>Alinhamento:</strong> {{ raca.alinhamento }}</p>
-        <h4>Habilidades:</h4>
-        <ul>
-            {% for habilidade in raca.habilidades %}
-            <li>{{ habilidade }}</li>
-            {% endfor %}
-        </ul>
-    </div>
-    
-    <a href="{{ url_for('criar_personagem') }}" class="btn">Criar Novo Personagem</a>
 </div>
+
+<style>
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.header {
+    background: linear-gradient(135deg, #2c3e50, #34495e);
+    color: white;
+    padding: 30px;
+    text-align: center;
+}
+
+.header h1 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+.header .subtitle {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+.content {
+    padding: 30px;
+}
+
+.info-section {
+    margin-bottom: 30px;
+}
+
+.info-section h2 {
+    color: #2c3e50;
+    border-bottom: 3px solid #3498db;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.info-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 5px solid #3498db;
+    transition: transform 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+}
+
+.info-card h3 {
+    color: #2c3e50;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.info-card p {
+    color: #7f8c8d;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.atributos-grid {
+    display: grid;
+    gap: 15px;
+}
+
+.atributo-card {
+    background: white;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 15px;
+    transition: all 0.3s ease;
+}
+
+.atributo-card:hover {
+    border-color: #3498db;
+    box-shadow: 0 5px 15px rgba(52, 152, 219, 0.2);
+}
+
+.atributo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.atributo-nome {
+    font-weight: bold;
+    color: #2c3e50;
+    text-transform: capitalize;
+    font-size: 1.1em;
+}
+
+.atributo-valor {
+    background: #3498db;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.atributo-barra {
+    width: 100%;
+    height: 12px;
+    background: #ecf0f1;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.atributo-preenchimento {
+    height: 100%;
+    background: linear-gradient(90deg, #2ecc71, #27ae60);
+    border-radius: 6px;
+    transition: width 1s ease-in-out;
+}
+
+.actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 2px solid #ecf0f1;
+}
+
+.btn {
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+    color: white;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.alert {
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+    text-align: center;
+    font-weight: bold;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 2px solid #c3e6cb;
+}
+
+.status-salvamento {
+    text-align: center;
+    padding: 15px;
+    background: #fff3cd;
+    border: 2px solid #ffeaa7;
+    border-radius: 10px;
+    margin: 20px 0;
+    color: #856404;
+}
+</style>
+
+<script>
+// Animação das barras de atributo
+document.addEventListener('DOMContentLoaded', function() {
+    const barras = document.querySelectorAll('.atributo-preenchimento');
+    barras.forEach(barra => {
+        const width = barra.style.width;
+        barra.style.width = '0%';
+        setTimeout(() => {
+            barra.style.width = width;
+        }, 100);
+    });
+});
+</script>
 {% endblock %}

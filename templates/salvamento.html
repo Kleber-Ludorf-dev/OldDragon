@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verificar Salvamento</title>
+</head>
+<body>
+    <h1>Verificação de Personagens Salvos</h1>
+    
+    <div style="background: #f0f0f0; padding: 15px; margin: 10px 0;">
+        <h3>Status do Arquivo:</h3>
+        <p>Total de personagens salvos: <strong>{{ total }}</strong></p>
+        <p>Arquivo: <code>personagens.json</code></p>
+        <a href="/api/verificar_personagens" target="_blank">Ver JSON Completo</a>
+    </div>
+
+    {% if personagens %}
+    <h2>Personagens Salvos:</h2>
+    <table border="1" style="width: 100%;">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Raça</th>
+                <th>Classe</th>
+                <th>Nível</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for personagem in personagens %}
+            <tr>
+                <td>{{ personagem.nome }}</td>
+                <td>{{ personagem.raca }}</td>
+                <td>{{ personagem.classe }}</td>
+                <td>{{ personagem.nivel }}</td>
+                <td>
+                    <a href="/personagem/{{ loop.index0 }}">Ver</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color: red;">Nenhum personagem salvo ainda!</p>
+    {% endif %}
+
+    <div style="margin-top: 20px;">
+        <a href="/criar">Criar Novo Personagem</a> | 
+        <a href="/">Voltar ao Início</a>
+    </div>
+</body>
+</html>
